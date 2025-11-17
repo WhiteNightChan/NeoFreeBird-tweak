@@ -183,13 +183,10 @@ static UIFont *TwitterChirpFont(TwitterFontStyle style) {
         [self.headerLabel.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:-16]
     ]];
     
-    CGFloat padding = 20 * 2 + 20 * 2;
-    CGFloat itemWidth = (self.view.bounds.size.width - padding) / 3;
-
-UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-layout.minimumInteritemSpacing = 10;
-layout.minimumLineSpacing = 10;
-layout.sectionInset = UIEdgeInsetsMake(16, 16, 16, 16);
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.minimumInteritemSpacing = 10;
+    layout.minimumLineSpacing = 10;
+    layout.sectionInset = UIEdgeInsetsMake(16, 16, 16, 16);
 
     self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;

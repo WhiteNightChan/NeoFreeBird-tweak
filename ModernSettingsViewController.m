@@ -883,8 +883,11 @@ static UIFont *TwitterChirpFont(TwitterFontStyle style) {
     if (indexPath.section == 0) {
         NSDictionary *sectionData = self.sections[indexPath.row];
         NSString *action = sectionData[@"action"];
-        if ([self respondsToSelector:NSSelectorFromString(action)]) {
-            [self performSelector:NSSelectorFromString(action)];
+        SEL selector = NSSelectorFromString(action);
+        if ([self respondsToSelector:selector]) {
+            IMP imp = [self methodForSelector:selector];
+            void (*func)(id, SEL) = (void *)imp;
+            func(self, selector);
         }
     }
     else if (indexPath.section == 1) {
