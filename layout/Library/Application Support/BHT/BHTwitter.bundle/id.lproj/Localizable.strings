@@ -105,8 +105,8 @@
 "COPY_PROFILE_INFO_OPTION_TITLE" = "Salin info profil";
 "COPY_PROFILE_INFO_OPTION_DETAIL_TITLE" = "Salin username, bio, dan lainnya dengan sekali ketuk.";
 
-"BIO_TRANSALTE_OPTION_TITLE" = "Terjemahkan bio";
-"BIO_TRANSALTE_OPTION_DETAIL_TITLE" = "Lihat bio dalam bahasa kamu.";
+"BIO_TRANSLATE_OPTION_TITLE" = "Terjemahkan bio";
+"BIO_TRANSLATE_OPTION_DETAIL_TITLE" = "Lihat bio dalam bahasa kamu.";
 
 "DISABLE_MEDIA_TAB_OPTION_TITLE" = "Tanpa tab Media terpisah";
 "DISABLE_MEDIA_TAB_OPTION_DETAIL_TITLE" = "Gabungkan tab Foto dan Video jadi satu.";
@@ -331,7 +331,7 @@
 "REFRESH_PILL_TEXT" = "Telah Di-tweet";
 
 /*Deprecated*/
-"TRUSTED_FRIENSS_OPTION_TITLE" = "Lingkaran Twitter";
+"TRUSTED_FRIENDS_OPTION_TITLE" = "Lingkaran Twitter";
 
 "ALWAYS_FOLLOWING_PAGE_OPTION_TITLE" = "Nonaktifkan tab 'Untukmu'";
 "ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE" = "Buka Twitter langsung di tab Mengikuti.";

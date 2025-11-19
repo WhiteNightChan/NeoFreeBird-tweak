@@ -412,7 +412,7 @@ PSSpecifier *photosVideosSection = [self newSectionWithTitle:[[BHTBundle sharedB
 
         PSSpecifier *noHistory = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"NO_HISTORY_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"NO_HISTORY_OPTION_DETAIL_TITLE"] key:@"no_his" defaultValue:false changeAction:nil];
 
-        PSSpecifier *bioTranslate = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"BIO_TRANSALTE_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"BIO_TRANSALTE_OPTION_DETAIL_TITLE"] key:@"bio_translate" defaultValue:false changeAction:nil];
+        PSSpecifier *bioTranslate = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"BIO_TRANSLATE_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"BIO_TRANSLATE_OPTION_DETAIL_TITLE"] key:@"bio_translate" defaultValue:false changeAction:nil];
 
         PSSpecifier *likeConfrim = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"LIKE_CONFIRM_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"LIKE_CONFIRM_OPTION_DETAIL_TITLE"] key:@"like_con" defaultValue:false changeAction:nil];
 

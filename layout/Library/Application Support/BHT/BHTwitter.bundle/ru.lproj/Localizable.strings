@@ -105,8 +105,8 @@
 "COPY_PROFILE_INFO_OPTION_TITLE" = "Копировать информацию профиля";
 "COPY_PROFILE_INFO_OPTION_DETAIL_TITLE" = "Копировать имя, био и другое одним нажатием.";
 
-"BIO_TRANSALTE_OPTION_TITLE" = "Переводить био";
-"BIO_TRANSALTE_OPTION_DETAIL_TITLE" = "Показывать биографии на твоём языке.";
+"BIO_TRANSLATE_OPTION_TITLE" = "Переводить био";
+"BIO_TRANSLATE_OPTION_DETAIL_TITLE" = "Показывать биографии на твоём языке.";
 
 "DISABLE_MEDIA_TAB_OPTION_TITLE" = "Объединить вкладки Медиа";
 "DISABLE_MEDIA_TAB_OPTION_DETAIL_TITLE" = "Фото и видео будут в одной вкладке.";
@@ -331,7 +331,7 @@
 "REFRESH_PILL_TEXT" = "Твит отправлен";
 
 /*Deprecated*/
-"TRUSTED_FRIENSS_OPTION_TITLE" = "Круги Twitter";
+"TRUSTED_FRIENDS_OPTION_TITLE" = "Круги Twitter";
 
 "ALWAYS_FOLLOWING_PAGE_OPTION_TITLE" = "Отключить вкладку «Для тебя»";
 "ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE" = "Открывать Twitter во вкладке «Подписки».";

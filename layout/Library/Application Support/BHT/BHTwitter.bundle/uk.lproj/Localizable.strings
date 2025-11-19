@@ -107,8 +107,8 @@
 "COPY_PROFILE_INFO_OPTION_TITLE" = "Копіювати інформацію профілю";
 "COPY_PROFILE_INFO_OPTION_DETAIL_TITLE" = "Копіюйте біо, ім'я користувача та інше одним натисканням.";
 
-"BIO_TRANSALTE_OPTION_TITLE" = "Перекладати «Про себе»";
-"BIO_TRANSALTE_OPTION_DETAIL_TITLE" = "Переглядайте біо своєю мовою.";
+"BIO_TRANSLATE_OPTION_TITLE" = "Перекладати «Про себе»";
+"BIO_TRANSLATE_OPTION_DETAIL_TITLE" = "Переглядайте біо своєю мовою.";
 
 "DISABLE_MEDIA_TAB_OPTION_TITLE" = "Об'єднати вкладки медіа";
 "DISABLE_MEDIA_TAB_OPTION_DETAIL_TITLE" = "Об'єднати фото та відео в одній вкладці.";
@@ -333,7 +333,7 @@
 "REFRESH_PILL_TEXT" = "Твітнуто";
 
 /*Deprecated*/
-"TRUSTED_FRIENSS_OPTION_TITLE" = "Кола Twitter";
+"TRUSTED_FRIENDS_OPTION_TITLE" = "Кола Twitter";
 
 "ALWAYS_FOLLOWING_PAGE_OPTION_TITLE" = "Вимкнути вкладку «Для вас»";
 "ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE" = "Відкривати Twitter з вкладки «Стежу».";

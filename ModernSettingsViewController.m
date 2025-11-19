@@ -1480,7 +1480,7 @@ static UIFont *TwitterChirpFont(TwitterFontStyle style) {
     self.settings = @[
         @{ @"key": @"follow_con", @"titleKey": @"FOLLOW_CONFIRM_OPTION_TITLE", @"subtitleKey": @"FOLLOW_CONFIRM_OPTION_DETAIL_TITLE", @"default": @NO, @"type": @"toggle" },
         @{ @"key": @"CopyProfileInfo", @"titleKey": @"COPY_PROFILE_INFO_OPTION_TITLE", @"subtitleKey": @"COPY_PROFILE_INFO_OPTION_DETAIL_TITLE", @"default": @NO, @"type": @"toggle" },
-        @{ @"key": @"bio_translate", @"titleKey": @"BIO_TRANSALTE_OPTION_TITLE", @"subtitleKey": @"BIO_TRANSALTE_OPTION_DETAIL_TITLE", @"default": @NO, @"type": @"toggle" },
+        @{ @"key": @"bio_translate", @"titleKey": @"BIO_TRANSLATE_OPTION_TITLE", @"subtitleKey": @"BIO_TRANSLATE_OPTION_DETAIL_TITLE", @"default": @NO, @"type": @"toggle" },
         @{ @"key": @"disableMediaTab", @"titleKey": @"DISABLE_MEDIA_TAB_OPTION_TITLE", @"subtitleKey": @"DISABLE_MEDIA_TAB_OPTION_DETAIL_TITLE", @"default": @YES, @"type": @"toggle" },
         @{ @"key": @"disableArticles", @"titleKey": @"DISABLE_ARTICLES_OPTION_TITLE", @"subtitleKey": @"DISABLE_ARTICLES_OPTION_DETAIL_TITLE", @"default": @YES, @"type": @"toggle" },
         @{ @"key": @"disableHighlights", @"titleKey": @"DISABLE_HIGHLIGHTS_OPTION_TITLE", @"subtitleKey": @"DISABLE_HIGHLIGHTS_OPTION_DETAIL_TITLE", @"default": @YES, @"type": @"toggle" },

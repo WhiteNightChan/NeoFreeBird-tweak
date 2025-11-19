@@ -109,8 +109,8 @@
 "COPY_PROFILE_INFO_OPTION_TITLE" = "Kopiuj dane profilu";
 "COPY_PROFILE_INFO_OPTION_DETAIL_TITLE" = "Kopiuj nazwy użytkowników, bio i więcej jednym stuknięciem.";
 
-"BIO_TRANSALTE_OPTION_TITLE" = "Tłumacz bio";
-"BIO_TRANSALTE_OPTION_DETAIL_TITLE" = "Wyświetlaj bio w swoim języku.";
+"BIO_TRANSLATE_OPTION_TITLE" = "Tłumacz bio";
+"BIO_TRANSLATE_OPTION_DETAIL_TITLE" = "Wyświetlaj bio w swoim języku.";
 
 "DISABLE_MEDIA_TAB_OPTION_TITLE" = "Bez osobnych kart Multimedia";
 "DISABLE_MEDIA_TAB_OPTION_DETAIL_TITLE" = "Łączy karty Zdjęcia i Wideo w jedną kartę.";
@@ -335,7 +335,7 @@
 "REFRESH_PILL_TEXT" = "Opublikowano";
 
 /*Deprecated*/
-"TRUSTED_FRIENSS_OPTION_TITLE" = "Kręgi na Twitterze";
+"TRUSTED_FRIENDS_OPTION_TITLE" = "Kręgi na Twitterze";
 
 "ALWAYS_FOLLOWING_PAGE_OPTION_TITLE" = "Wyłącz kartę Dla Ciebie";
 "ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE" = "Otwieraj Twittera na karcie Obserwowani.";

@@ -114,8 +114,8 @@
 "COPY_PROFILE_INFO_OPTION_TITLE" = "プロフィールの詳細をコピー";
 "COPY_PROFILE_INFO_OPTION_DETAIL_TITLE" = "ユーザー名、プロフィールなどをワンタップでコピーできるようにします。";
 
-"BIO_TRANSALTE_OPTION_TITLE" = "プロフィールを翻訳";
-"BIO_TRANSALTE_OPTION_DETAIL_TITLE" = "プロフィールを翻訳できるようにします。";
+"BIO_TRANSLATE_OPTION_TITLE" = "プロフィールを翻訳";
+"BIO_TRANSLATE_OPTION_DETAIL_TITLE" = "プロフィールを翻訳できるようにします。";
 
 "DISABLE_MEDIA_TAB_OPTION_TITLE" = "メディアタブを一体化";
 "DISABLE_MEDIA_TAB_OPTION_DETAIL_TITLE" = "[動画] タブと [画像] タブを一つに統合して表示します。";
@@ -341,7 +341,7 @@
 "REFRESH_PILL_TEXT" = "新しいツイート";
 
 /*Deprecated*/
-"TRUSTED_FRIENSS_OPTION_TITLE" = "Twitterサークル";
+"TRUSTED_FRIENDS_OPTION_TITLE" = "Twitterサークル";
 
 "ALWAYS_FOLLOWING_PAGE_OPTION_TITLE" = "おすすめタブを非表示";
 "ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE" = "Twitterを起動した際に [フォロー中] タブを開きます。";

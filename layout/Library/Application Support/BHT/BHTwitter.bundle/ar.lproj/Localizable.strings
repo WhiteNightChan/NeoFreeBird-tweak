@@ -106,8 +106,8 @@
 "COPY_PROFILE_INFO_OPTION_TITLE" = "نسخ معلومات الملف الشخصي";
 "COPY_PROFILE_INFO_OPTION_DETAIL_TITLE" = "نسخ الاسم أو النبذة أو غيرها بنقرة واحدة.";
 
-"BIO_TRANSALTE_OPTION_TITLE" = "ترجمة النبذات";
-"BIO_TRANSALTE_OPTION_DETAIL_TITLE" = "عرض النبذة بلغتك.";
+"BIO_TRANSLATE_OPTION_TITLE" = "ترجمة النبذات";
+"BIO_TRANSLATE_OPTION_DETAIL_TITLE" = "عرض النبذة بلغتك.";
 
 "DISABLE_MEDIA_TAB_OPTION_TITLE" = "بدون تبويبات وسائط منفصلة";
 "DISABLE_MEDIA_TAB_OPTION_DETAIL_TITLE" = "دمج الصور والفيديو في تبويب واحد.";
@@ -332,7 +332,7 @@
 "REFRESH_PILL_TEXT" = "تم التغريد";
 
 /*Deprecated*/
-"TRUSTED_FRIENSS_OPTION_TITLE" = "دوائر تويتر";
+"TRUSTED_FRIENDS_OPTION_TITLE" = "دوائر تويتر";
 
 "ALWAYS_FOLLOWING_PAGE_OPTION_TITLE" = "إلغاء تبويب 'من أجلك'";
 "ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE" = "افتح تويتر على تبويب المتابعة.";

@@ -105,8 +105,8 @@
 "COPY_PROFILE_INFO_OPTION_TITLE" = "Copiar detalles del perfil";
 "COPY_PROFILE_INFO_OPTION_DETAIL_TITLE" = "Copia nombres, biografías y más con un toque.";
 
-"BIO_TRANSALTE_OPTION_TITLE" = "Traducir biografías";
-"BIO_TRANSALTE_OPTION_DETAIL_TITLE" = "Ver bios en tu idioma.";
+"BIO_TRANSLATE_OPTION_TITLE" = "Traducir biografías";
+"BIO_TRANSLATE_OPTION_DETAIL_TITLE" = "Ver bios en tu idioma.";
 
 "DISABLE_MEDIA_TAB_OPTION_TITLE" = "Sin pestañas de medios separadas";
 "DISABLE_MEDIA_TAB_OPTION_DETAIL_TITLE" = "Combina Fotos y Videos en una sola pestaña.";
@@ -331,7 +331,7 @@
 "REFRESH_PILL_TEXT" = "Tweet enviado";
 
 /*Deprecated*/
-"TRUSTED_FRIENSS_OPTION_TITLE" = "Círculos de Twitter";
+"TRUSTED_FRIENDS_OPTION_TITLE" = "Círculos de Twitter";
 
 "ALWAYS_FOLLOWING_PAGE_OPTION_TITLE" = "Desactivar pestaña 'Para ti'";
 "ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE" = "Abrir Twitter en la pestaña de Seguidos.";

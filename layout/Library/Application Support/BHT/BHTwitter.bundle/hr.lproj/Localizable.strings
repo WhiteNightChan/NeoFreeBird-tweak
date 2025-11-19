@@ -105,8 +105,8 @@
 "COPY_PROFILE_INFO_OPTION_TITLE" = "Kopiraj podatke profila";
 "COPY_PROFILE_INFO_OPTION_DETAIL_TITLE" = "Kopiraj korisnička imena, biografiju i drugo jednim dodirom.";
 
-"BIO_TRANSALTE_OPTION_TITLE" = "Prevedi biografije";
-"BIO_TRANSALTE_OPTION_DETAIL_TITLE" = "Prikaži biografije na svom jeziku.";
+"BIO_TRANSLATE_OPTION_TITLE" = "Prevedi biografije";
+"BIO_TRANSLATE_OPTION_DETAIL_TITLE" = "Prikaži biografije na svom jeziku.";
 
 "DISABLE_MEDIA_TAB_OPTION_TITLE" = "Bez odvojenih kartica za medije";
 "DISABLE_MEDIA_TAB_OPTION_DETAIL_TITLE" = "Spoji kartice za fotografije i videozapise.";
@@ -331,7 +331,7 @@
 "REFRESH_PILL_TEXT" = "Tweetano";
 
 /*Deprecated*/
-"TRUSTED_FRIENSS_OPTION_TITLE" = "Twitter Krugovi";
+"TRUSTED_FRIENDS_OPTION_TITLE" = "Twitter Krugovi";
 
 "ALWAYS_FOLLOWING_PAGE_OPTION_TITLE" = "Onemogući karticu 'Za tebe'";
 "ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE" = "Otvori Twitter na kartici 'Pratim'.";

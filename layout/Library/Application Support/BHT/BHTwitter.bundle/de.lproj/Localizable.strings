@@ -105,8 +105,8 @@
 "COPY_PROFILE_INFO_OPTION_TITLE" = "Profildetails kopieren";
 "COPY_PROFILE_INFO_OPTION_DETAIL_TITLE" = "Benutzernamen, Bios und mehr mit einem Tipp kopieren.";
 
-"BIO_TRANSALTE_OPTION_TITLE" = "Bios übersetzen";
-"BIO_TRANSALTE_OPTION_DETAIL_TITLE" = "Bios in deiner Sprache anzeigen.";
+"BIO_TRANSLATE_OPTION_TITLE" = "Bios übersetzen";
+"BIO_TRANSLATE_OPTION_DETAIL_TITLE" = "Bios in deiner Sprache anzeigen.";
 
 "DISABLE_MEDIA_TAB_OPTION_TITLE" = "Kein separater Medien-Tab";
 "DISABLE_MEDIA_TAB_OPTION_DETAIL_TITLE" = "Fasst die Tabs „Fotos“ und „Videos“ zu einem Tab zusammen.";
@@ -330,7 +330,7 @@
 "REFRESH_PILL_TEXT" = "Tweet gesendet";
 
 /*Deprecated*/
-"TRUSTED_FRIENSS_OPTION_TITLE" = "Twitter Circles";
+"TRUSTED_FRIENDS_OPTION_TITLE" = "Twitter Circles";
 
 "ALWAYS_FOLLOWING_PAGE_OPTION_TITLE" = "„Für dich“-Tab deaktivieren";
 "ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE" = "Twitter immer auf dem „Folge ich“-Tab öffnen.";

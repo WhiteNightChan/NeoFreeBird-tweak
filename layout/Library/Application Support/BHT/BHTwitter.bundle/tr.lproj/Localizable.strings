@@ -105,8 +105,8 @@
 "COPY_PROFILE_INFO_OPTION_TITLE" = "Profil bilgilerini kopyala";
 "COPY_PROFILE_INFO_OPTION_DETAIL_TITLE" = "Kullanıcı adı, bio ve daha fazlasını tek dokunuşla kopyala.";
 
-"BIO_TRANSALTE_OPTION_TITLE" = "Biyografileri çevir";
-"BIO_TRANSALTE_OPTION_DETAIL_TITLE" = "Biyografileri kendi dilinde gör.";
+"BIO_TRANSLATE_OPTION_TITLE" = "Biyografileri çevir";
+"BIO_TRANSLATE_OPTION_DETAIL_TITLE" = "Biyografileri kendi dilinde gör.";
 
 "DISABLE_MEDIA_TAB_OPTION_TITLE" = "Ayrı Medya sekmesi olmasın";
 "DISABLE_MEDIA_TAB_OPTION_DETAIL_TITLE" = "Fotoğraflar ve Videolar sekmelerini birleştir.";
@@ -331,7 +331,7 @@
 "REFRESH_PILL_TEXT" = "Tweetlendi";
 
 /*Deprecated*/
-"TRUSTED_FRIENSS_OPTION_TITLE" = "Twitter Çevreleri";
+"TRUSTED_FRIENDS_OPTION_TITLE" = "Twitter Çevreleri";
 
 "ALWAYS_FOLLOWING_PAGE_OPTION_TITLE" = "‘Senin için’ sekmesini devre dışı bırak";
 "ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE" = "Twitter’ı ‘Takip Edilenler’ sekmesinde aç.";
