@@ -2735,9 +2735,9 @@ static NSTimer *cookieRetryTimer = nil;
         [footerItem performSelector:@selector(setTimeAgo:) withObject:newTimeAgo];
 
         // Hide view count by setting it to nil
-        if ([footerItem respondsToSelector:@selector(setViewCount:)]) {
-            [footerItem performSelector:@selector(setViewCount:) withObject:nil];
-        }
+        // if ([footerItem respondsToSelector:@selector(setViewCount:)]) {
+        //    [footerItem performSelector:@selector(setViewCount:) withObject:nil];
+        //}
 
         // Now update the footer text view to refresh the display
         id footerTextView = [self footerTextView];
