@@ -35,6 +35,7 @@ static void BHT_ensureTheming(void);
 static void BHT_forceRefreshAllWindowAppearances(void);
 static void BHT_ensureThemingEngineSynchronized(BOOL forceSynchronize);
 static UIViewController* getViewControllerForView(UIView *view);
+static char kBHTSourceTapAddedKey;
 
 // Theme state tracking
 static BOOL BHT_themeManagerInitialized = NO;
@@ -2669,8 +2670,8 @@ static NSTimer *cookieRetryTimer = nil;
 
     NSString *tweetIDStr = [NSString stringWithFormat:@"%lld", statusID];
     if (!tweetIDStr || tweetIDStr.length == 0) {
-                return;
-            }
+        return;
+    }
 
     // Initialize tweet sources if needed
     if (!tweetSources) {
@@ -2686,7 +2687,6 @@ static NSTimer *cookieRetryTimer = nil;
     // Update footer text immediately if we have the source
     NSString *sourceText = tweetSources[tweetIDStr];
     if (sourceText && sourceText.length > 0 && ![sourceText isEqualToString:@"Source Unavailable"] && ![sourceText isEqualToString:@""]) {
-        // Delay the update to ensure the view is fully configured, using a weak reference to self to prevent retain cycles
         __weak __typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
             __strong __typeof(weakSelf) strongSelf = weakSelf;
@@ -2694,6 +2694,27 @@ static NSTimer *cookieRetryTimer = nil;
                 [strongSelf BHT_updateFooterTextWithSource:sourceText tweetID:tweetIDStr];
             }
         });
+    }
+}
+
+%new
+- (void)BHT_handleSourceLabelTap:(UITapGestureRecognizer *)recognizer {
+    if (recognizer.state != UIGestureRecognizerStateEnded) {
+        return;
+    }
+
+    NSURL *url = [NSURL URLWithString:@"https://help.twitter.com/using-twitter/how-to-tweet#source-labels"];
+    if (!url) {
+        return;
+    }
+
+    UIApplication *app = [UIApplication sharedApplication];
+    if ([app respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+        [app openURL:url
+             options:@{}
+   completionHandler:nil];
+    } else {
+        [app openURL:url];
     }
 }
 
@@ -2730,21 +2751,34 @@ static NSTimer *cookieRetryTimer = nil;
     // Create new timeAgo with source appended
     NSString *newTimeAgo = [NSString stringWithFormat:@"%@ · %@", currentTimeAgo, sourceText];
 
-    // Set the new timeAgo and hide view count
-    if ([footerItem respondsToSelector:@selector(setTimeAgo:)]) {
-        [footerItem performSelector:@selector(setTimeAgo:) withObject:newTimeAgo];
+// Set the new timeAgo and hide view count
+if ([footerItem respondsToSelector:@selector(setTimeAgo:)]) {
+    [footerItem performSelector:@selector(setTimeAgo:) withObject:newTimeAgo];
 
-        // Hide view count by setting it to nil
-        // if ([footerItem respondsToSelector:@selector(setViewCount:)]) {
-        //    [footerItem performSelector:@selector(setViewCount:) withObject:nil];
-        //}
+    // Now update the footer text view to refresh the display
+    id footerTextView = [self footerTextView];
+    if (footerTextView && [footerTextView respondsToSelector:@selector(updateFooterTextView)]) {
+        [footerTextView performSelector:@selector(updateFooterTextView)];
+    }
 
-        // Now update the footer text view to refresh the display
-        id footerTextView = [self footerTextView];
-        if (footerTextView && [footerTextView respondsToSelector:@selector(updateFooterTextView)]) {
-            [footerTextView performSelector:@selector(updateFooterTextView)];
+    // Make the footer tappable to open the source label help page
+    if ([footerTextView isKindOfClass:[UIView class]]) {
+        UIView *footerView = (UIView *)footerTextView;
+        footerView.userInteractionEnabled = YES;
+
+NSNumber *alreadyAdded = objc_getAssociatedObject(footerView, &kBHTSourceTapAddedKey);
+        if (![alreadyAdded boolValue]) {
+            UITapGestureRecognizer *tap =
+                [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                        action:@selector(BHT_handleSourceLabelTap:)];
+            [footerView addGestureRecognizer:tap];
+objc_setAssociatedObject(footerView,
+                         &kBHTSourceTapAddedKey,
+                         @(YES),
+                         OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         }
     }
+}
 }
 
 
