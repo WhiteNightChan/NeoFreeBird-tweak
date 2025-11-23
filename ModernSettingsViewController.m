@@ -43,6 +43,10 @@
 - (instancetype)initWithAccount:(TFNTwitterAccount *)account;
 @end
 
+@interface WebSettingsViewController : UIViewController
+- (instancetype)initWithAccount:(TFNTwitterAccount *)account;
+@end
+
 @interface DebugSettingsViewController : UIViewController
 - (instancetype)initWithAccount:(TFNTwitterAccount *)account;
 @end
@@ -1117,9 +1121,7 @@ static UIFont *TwitterChirpFont(TwitterFontStyle style) {
 }
 
 - (void)showWebSettings {
-    ModernSettingsPlaceholderViewController *vc =
-        [[ModernSettingsPlaceholderViewController alloc] initWithAccount:self.account
-                                                                titleKey:@"MODERN_SETTINGS_WEB_TITLE"];
+    WebSettingsViewController *vc = [[WebSettingsViewController alloc] initWithAccount:self.account];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -1964,7 +1966,6 @@ static UIFont *TwitterChirpFont(TwitterFontStyle style) {
         @{@"key": @"refresh_pill_label", @"titleKey": @"REFRESH_PILL_OPTION_TITLE", @"subtitleKey": @"REFRESH_PILL_DETAIL_TITLE", @"default": @YES, @"type": @"toggle"},
         @{@"key": @"color_twitter_icon_in_top_bar", @"titleKey": @"COLOR_TWITTER_ICON_OPTION_TITLE", @"subtitleKey": @"COLOR_TWITTER_ICON_DETAIL_TITLE", @"default": @YES, @"type": @"toggle"}
     ];
-
     [self.tableView reloadData];
 }
 
@@ -2107,8 +2108,7 @@ static UIFont *TwitterChirpFont(TwitterFontStyle style) {
 
 - (void)buildSettingsList {
     self.toggles = @[
-        @{ @"key": @"restore_tweet_labels", @"titleKey": @"ENABLE_TWEET_LABELS_OPTION_TITLE", @"subtitleKey": @"ENABLE_TWEET_LABELS_OPTION_DETAIL_TITLE", @"default": @NO, @"type": @"toggle" },
-        @{ @"key": @"ios_in_app_article_webview_enabled", @"titleKey": @"NEW_INAPP_WEB_OPTION_TITLE", @"subtitleKey": @"NEW_INAPP_WEB_DETAIL_TITLE", @"default": @YES }
+        @{ @"key": @"restore_tweet_labels", @"titleKey": @"ENABLE_TWEET_LABELS_OPTION_TITLE", @"subtitleKey": @"ENABLE_TWEET_LABELS_OPTION_DETAIL_TITLE", @"default": @NO, @"type": @"toggle" }
     ];
     [self updateVisibleToggles];
     [self.tableView reloadData];
@@ -2254,6 +2254,346 @@ static UIFont *TwitterChirpFont(TwitterFontStyle style) {
 @end
 
 // ==============================
+// WebSettingsViewController (cleaned - translate removed)
+// ==============================
+@interface WebSettingsViewController () <UITableViewDataSource, UITableViewDelegate>
+@property (nonatomic, strong) TFNTwitterAccount *account;
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSArray<NSDictionary *> *toggles;
+@property (nonatomic, strong) NSArray<NSDictionary *> *visibleToggles;
+@end
+
+@implementation WebSettingsViewController
+
+- (instancetype)initWithAccount:(TFNTwitterAccount *)account {
+    if ((self = [super init])) {
+        self.account = account;
+        [self buildSettingsList];
+    }
+    return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setupNav];
+    [self setupTable];
+}
+
+- (void)setupNav {
+    NSString *title = [[BHTBundle sharedBundle] localizedStringForKey:@"MODERN_SETTINGS_WEB_TITLE"];
+    if (self.account) {
+        self.navigationItem.titleView = [objc_getClass("TFNTitleView") titleViewWithTitle:title subtitle:self.account.displayUsername];
+    } else {
+        self.title = title;
+    }
+}
+
+- (void)setupTable {
+    self.view.backgroundColor = [BHDimPalette currentBackgroundColor];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    self.tableView.backgroundColor = [BHDimPalette currentBackgroundColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.showsHorizontalScrollIndicator = NO;
+    self.tableView.estimatedRowHeight = 80;
+    [self.tableView registerClass:[ModernSettingsToggleCell class] forCellReuseIdentifier:@"ToggleCell"];
+    [self.tableView registerClass:[ModernSettingsTableViewCell class] forCellReuseIdentifier:@"ButtonCell"];
+    [self.tableView registerClass:[ModernSettingsCompactButtonCell class] forCellReuseIdentifier:@"CompactButtonCell"];
+    [self.view addSubview:self.tableView];
+}
+
+- (void)buildSettingsList {
+    self.toggles = @[
+        @{ @"key": @"strip_tracking_params", @"titleKey": @"STRIP_URL_TRACKING_PARAMETERS_TITLE", @"subtitleKey": @"STRIP_URL_TRACKING_PARAMETERS_DETAIL_TITLE", @"default": @NO },
+        @{ @"type": @"compactButton", @"parentKey": @"strip_tracking_params", @"key": @"url_host_button", @"titleKey": @"SELECT_URL_HOST_AFTER_COPY_OPTION_TITLE", @"action": @"showURLHostSelectionViewController:", @"prefKeyForSubtitle": @"tweet_url_host", @"subtitleDefault": @"x.com" },
+        @{ @"key": @"openInBrowser", @"titleKey": @"ALWAYS_OPEN_SAFARI_OPTION_TITLE", @"subtitleKey": @"ALWAYS_OPEN_SAFARI_OPTION_DETAIL_TITLE", @"default": @NO },
+        @{ @"key": @"ios_in_app_article_webview_enabled", @"titleKey": @"NEW_INAPP_WEB_OPTION_TITLE", @"subtitleKey": @"NEW_INAPP_WEB_DETAIL_TITLE", @"default": @YES }
+    ];
+    [self updateVisibleToggles];
+    [self.tableView reloadData];
+}
+
+- (void)updateVisibleToggles {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *visible = [NSMutableArray array];
+    for (NSDictionary *toggleData in self.toggles) {
+        NSString *parentKey = toggleData[@"parentKey"];
+        if (parentKey) {
+            BOOL parentEnabled = [[defaults objectForKey:parentKey] ?: toggleData[@"default"] boolValue];
+            if (parentEnabled) {
+                [visible addObject:toggleData];
+            }
+        } else {
+            [visible addObject:toggleData];
+        }
+    }
+    self.visibleToggles = [visible copy];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.visibleToggles.count;
+}
+
+- (NSInteger)indexForToggleKey:(NSString *)key inArray:(NSArray<NSDictionary *> *)array {
+    __block NSInteger foundIndex = NSNotFound;
+    [array enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+        if ([obj[@"key"] isEqualToString:key]) {
+            foundIndex = (NSInteger)idx;
+            *stop = YES;
+        }
+    }];
+    return foundIndex;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *toggleData = self.visibleToggles[indexPath.row];
+    NSString *type = toggleData[@"type"];
+if ([type isEqualToString:@"compactButton"]) {
+    ModernSettingsCompactButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CompactButtonCell" forIndexPath:indexPath];
+    NSString *title = [[BHTBundle sharedBundle] localizedStringForKey:toggleData[@"titleKey"]];
+    NSString *subtitle = @"";
+    NSString *prefKey = toggleData[@"prefKeyForSubtitle"];
+    if (prefKey) {
+        subtitle = [[NSUserDefaults standardUserDefaults] objectForKey:prefKey] ?: toggleData[@"subtitleDefault"];
+        if ([toggleData[@"isSecure"] boolValue] && subtitle.length > 0 && ![subtitle isEqualToString:toggleData[@"subtitleDefault"]]) {
+            subtitle = @"••••••••••••••••";
+        }
+    }
+    [cell configureWithTitle:title subtitle:subtitle];
+
+    // New: attach modern URL host menu for this specific row on iOS 14+.
+    NSString *key = toggleData[@"key"];
+    if (@available(iOS 14.0, *)) {
+        if ([key isEqualToString:@"url_host_button"]) {
+            [self configureURLHostMenuForCell:cell atIndexPath:indexPath];
+        }
+    }
+
+    return cell;
+}else if ([type isEqualToString:@"button"]) {
+        ModernSettingsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ButtonCell" forIndexPath:indexPath];
+        NSString *title = [[BHTBundle sharedBundle] localizedStringForKey:toggleData[@"titleKey"]];
+        NSString *subtitle = @"";
+        NSString *prefKey = toggleData[@"prefKeyForSubtitle"];
+        if (prefKey) {
+            subtitle = [[NSUserDefaults standardUserDefaults] objectForKey:prefKey] ?: toggleData[@"subtitleDefault"];
+            if ([toggleData[@"isSecure"] boolValue] && subtitle.length > 0 && ![subtitle isEqualToString:toggleData[@"subtitleDefault"]]) {
+                subtitle = @"••••••••••••••••";
+            }
+        }
+        NSString *iconName = toggleData[@"icon"];
+        [cell configureWithTitle:title subtitle:subtitle iconName:iconName];
+        return cell;
+    } else {
+        ModernSettingsToggleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ToggleCell" forIndexPath:indexPath];
+        NSString *title = [[BHTBundle sharedBundle] localizedStringForKey:toggleData[@"titleKey"]];
+        NSString *subtitleKey = toggleData[@"subtitleKey"];
+        NSString *subtitle = (subtitleKey.length > 0) ? [[BHTBundle sharedBundle] localizedStringForKey:subtitleKey] : @"";
+        [cell configureWithTitle:title subtitle:subtitle];
+        NSString *key = toggleData[@"key"];
+        BOOL isEnabled = [[[NSUserDefaults standardUserDefaults] objectForKey:key] ?: toggleData[@"default"] boolValue];
+        cell.toggleSwitch.on = isEnabled;
+        objc_setAssociatedObject(cell.toggleSwitch, @"prefKey", key, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        [cell addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+        return cell;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSDictionary *data = self.visibleToggles[indexPath.row];
+
+    // For the URL host row on iOS 14+, the cell itself shows the menu.
+    if (@available(iOS 14.0, *)) {
+        if ([data[@"key"] isEqualToString:@"url_host_button"]) {
+            return;
+        }
+    }
+
+    if ([data[@"type"] isEqualToString:@"button"] || [data[@"type"] isEqualToString:@"compactButton"]) {
+        NSString *actionName = data[@"action"];
+        if (actionName) {
+            SEL action = NSSelectorFromString(actionName);
+            if ([self respondsToSelector:action]) {
+                NSMutableDictionary *payload = [data mutableCopy];
+                payload[@"indexPath"] = indexPath;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                [self performSelector:action withObject:payload];
+#pragma clang diagnostic pop
+            }
+        }
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 0)];
+    UILabel *label = [[UILabel alloc] init];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.text = [[BHTBundle sharedBundle] localizedStringForKey:@"MODERN_SETTINGS_WEB_SUBTITLE"];
+    label.numberOfLines = 0;
+    id fontGroup = [objc_getClass("TAEStandardFontGroup") sharedFontGroup];
+    label.font = [fontGroup performSelector:@selector(subtext2Font)];
+    Class TAEColorSettingsCls = objc_getClass("TAEColorSettings");
+    id settings = [TAEColorSettingsCls sharedSettings];
+    id colorPalette = [[settings currentColorPalette] colorPalette];
+    UIColor *subtitleColor = [colorPalette performSelector:@selector(tabBarItemColor)];
+    label.textColor = subtitleColor;
+    [header addSubview:label];
+    [NSLayoutConstraint activateConstraints:@[
+        [label.leadingAnchor constraintEqualToAnchor:header.leadingAnchor constant:20],
+        [label.trailingAnchor constraintEqualToAnchor:header.trailingAnchor constant:-20],
+        [label.topAnchor constraintEqualToAnchor:header.topAnchor constant:8],
+        [label.bottomAnchor constraintEqualToAnchor:header.bottomAnchor constant:-8]
+    ]];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return UITableViewAutomaticDimension;
+}
+
+- (void)switchChanged:(UISwitch *)sender {
+    NSString *key = objc_getAssociatedObject(sender, @"prefKey");
+    if (!key) {
+        return;
+    }
+
+    BOOL isOn = sender.isOn;
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:isOn forKey:key];
+    [defaults synchronize];
+
+    if ([key isEqualToString:@"strip_tracking_params"]) {
+        // Find where the domain selector row was and will be
+        NSInteger oldIndex = [self indexForToggleKey:@"url_host_button" inArray:self.visibleToggles];
+
+        // Update the data model
+        [self updateVisibleToggles];
+
+        NSInteger newIndex = [self indexForToggleKey:@"url_host_button" inArray:self.visibleToggles];
+
+        [self.tableView beginUpdates];
+
+        if (oldIndex == NSNotFound && newIndex != NSNotFound) {
+            // Row appeared
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:newIndex inSection:0];
+            [self.tableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+        } else if (oldIndex != NSNotFound && newIndex == NSNotFound) {
+            // Row disappeared
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:oldIndex inSection:0];
+            [self.tableView deleteRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+
+        [self.tableView endUpdates];
+    }
+
+    if ([key isEqualToString:@"flex_twitter"]) {
+        if (isOn) {
+            [[objc_getClass("FLEXManager") sharedManager] showExplorer];
+        } else {
+            [[objc_getClass("FLEXManager") sharedManager] hideExplorer];
+        }
+    }
+
+    if ([key isEqualToString:@"square_avatars"]) {
+        [self showRestartRequiredAlert:@"RESTART_REQUIRED_ALERT_MESSAGE"];
+    }
+}
+
+- (void)configureURLHostMenuForCell:(ModernSettingsCompactButtonCell *)cell
+                        atIndexPath:(NSIndexPath *)indexPath {
+    if (!cell) {
+        return;
+    }
+
+    if (!@available(iOS 14.0, *)) {
+        return;
+    }
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *currentHost = [defaults objectForKey:@"tweet_url_host"] ?: @"x.com";
+
+    NSArray<NSString *> *hosts = @[
+        @"x.com",
+        @"twitter.com",
+        @"fxtwitter.com",
+        @"vxtwitter.com",
+        @"fixvx.com"
+    ];
+
+    // Create or reuse a button that will host the menu.
+    UIButton *menuButton = [cell.contentView viewWithTag:4242];
+    if (!menuButton) {
+        menuButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        menuButton.tag = 4242;
+        menuButton.backgroundColor = [UIColor clearColor];
+        // No title or image, purely functional.
+        [cell.contentView addSubview:menuButton];
+    }
+
+    // Place the button over the right half of the cell so the menu anchor
+    // is near the domain text instead of the center of the cell.
+    CGFloat width = cell.contentView.bounds.size.width;
+    CGFloat height = cell.contentView.bounds.size.height;
+    CGFloat buttonWidth = width * 0.5; // right half
+    menuButton.frame = CGRectMake(width - buttonWidth, 0.0, buttonWidth, height);
+    menuButton.autoresizingMask = UIViewAutoresizingFlexibleWidth |
+                                  UIViewAutoresizingFlexibleHeight |
+                                  UIViewAutoresizingFlexibleLeftMargin;
+    [cell.contentView bringSubviewToFront:menuButton];
+
+    NSMutableArray<UIAction *> *actions = [NSMutableArray array];
+
+    for (NSString *host in hosts) {
+        UIAction *action = [UIAction actionWithTitle:host
+                                               image:nil
+                                          identifier:nil
+                                             handler:^(__kindof UIAction * _Nonnull a) {
+            [defaults setObject:host forKey:@"tweet_url_host"];
+            [defaults synchronize];
+
+            if (indexPath) {
+                [self.tableView reloadRowsAtIndexPaths:@[indexPath]
+                                      withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }];
+
+        if ([host isEqualToString:currentHost]) {
+            action.state = UIMenuElementStateOn;
+        }
+
+        [actions addObject:action];
+    }
+
+    UIMenu *menu = [UIMenu menuWithTitle:@"URL"
+                                   image:nil
+                              identifier:nil
+                                 options:0
+                                children:actions];
+
+    menuButton.menu = menu;
+    menuButton.showsMenuAsPrimaryAction = YES;
+}
+
+- (void)showRestartRequiredAlert:(NSString *)messageKey {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"RESTART_REQUIRED_ALERT_TITLE"]
+                                                                   message:[[BHTBundle sharedBundle] localizedStringForKey:messageKey]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"NOT_NOW_BUTTON_TITLE"] style:UIAlertActionStyleDefault handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"RESTART_NOW_BUTTON_TITLE"] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {exit(0);}]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+@end
+
+// ==============================
 // DebugSettingsViewController (cleaned - translate removed)
 // ==============================
 @interface DebugSettingsViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -2307,7 +2647,8 @@ static UIFont *TwitterChirpFont(TwitterFontStyle style) {
 }
 
 - (void)buildSettingsList {
-    self.toggles = @[ @{ @"key": @"flex_twitter", @"titleKey": @"FLEX_OPTION_TITLE", @"subtitleKey": @"FLEX_OPTION_DETAIL_TITLE", @"default": @NO, @"type": @"toggle" } ];
+    self.toggles = @[ @{ @"key": @"flex_twitter", @"titleKey": @"FLEX_OPTION_TITLE", @"subtitleKey": @"FLEX_OPTION_DETAIL_TITLE", @"default": @NO, @"type": @"toggle" } 
+    ];
     [self updateVisibleToggles];
     [self.tableView reloadData];
 }
@@ -2580,9 +2921,6 @@ static UIFont *TwitterChirpFont(TwitterFontStyle style) {
         @{ @"key": @"hide_topics", @"titleKey": @"HIDE_TOPICS_OPTION_TITLE", @"subtitleKey": @"HIDE_TOPICS_OPTION_DETAIL_TITLE", @"default": @YES },
         @{ @"key": @"hide_topics_to_follow", @"titleKey": @"HIDE_TOPICS_TO_FOLLOW_OPTION", @"subtitleKey": @"HIDE_TOPICS_TO_FOLLOW_OPTION_DETAIL_TITLE", @"default": @YES },
         @{ @"key": @"hide_who_to_follow", @"titleKey": @"HIDE_WHO_FOLLOW_OPTION", @"subtitleKey": @"HIDE_WHO_FOLLOW_OPTION_DETAIL_TITLE", @"default": @YES },
-        @{ @"key": @"openInBrowser", @"titleKey": @"ALWAYS_OPEN_SAFARI_OPTION_TITLE", @"subtitleKey": @"ALWAYS_OPEN_SAFARI_OPTION_DETAIL_TITLE", @"default": @NO },
-        @{ @"key": @"strip_tracking_params", @"titleKey": @"STRIP_URL_TRACKING_PARAMETERS_TITLE", @"subtitleKey": @"STRIP_URL_TRACKING_PARAMETERS_DETAIL_TITLE", @"default": @NO },
-        @{ @"type": @"compactButton", @"parentKey": @"strip_tracking_params", @"key": @"url_host_button", @"titleKey": @"SELECT_URL_HOST_AFTER_COPY_OPTION_TITLE", @"action": @"showURLHostSelectionViewController:", @"prefKeyForSubtitle": @"tweet_url_host", @"subtitleDefault": @"x.com" },
         @{ @"key": @"no_his", @"titleKey": @"NO_HISTORY_OPTION_TITLE", @"subtitleKey": @"NO_HISTORY_OPTION_DETAIL_TITLE", @"default": @NO },
         @{ @"key": @"hide_trend_videos", @"titleKey": @"HIDE_TREND_VIDEOS_OPTION_TITLE", @"subtitleKey": @"HIDE_TREND_VIDEOS_OPTION_DETAIL_TITLE", @"default": @NO },
         @{ @"key": @"hide_spaces", @"titleKey": @"HIDE_SPACE_OPTION_TITLE", @"subtitleKey": @"", @"default": @NO },
@@ -2762,44 +3100,6 @@ static UIFont *TwitterChirpFont(TwitterFontStyle style) {
             });
         }
     }
-}
-
-- (void)showURLHostSelectionViewController:(NSDictionary *)sender {
-    NSIndexPath *indexPath = sender[@"indexPath"];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"NeoFreeBird" message:@"URL" preferredStyle:UIAlertControllerStyleActionSheet];
-    if (alert.popoverPresentationController != nil) {
-        alert.popoverPresentationController.sourceView = cell;
-        alert.popoverPresentationController.sourceRect = cell.bounds;
-    }
-    UIAlertAction *xHostAction = [UIAlertAction actionWithTitle:@"x.com" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"x.com" forKey:@"tweet_url_host"];
-        if (indexPath) [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }];
-    UIAlertAction *twitterHostAction = [UIAlertAction actionWithTitle:@"twitter.com" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"twitter.com" forKey:@"tweet_url_host"];
-        if (indexPath) [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }];
-    UIAlertAction *fxHostAction = [UIAlertAction actionWithTitle:@"fxtwitter.com" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"fxtwitter.com" forKey:@"tweet_url_host"];
-        if (indexPath) [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }];
-    UIAlertAction *vxHostAction = [UIAlertAction actionWithTitle:@"vxtwitter.com" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"vxtwitter.com" forKey:@"tweet_url_host"];
-        if (indexPath) [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }];
-    UIAlertAction *fixvxHostAction = [UIAlertAction actionWithTitle:@"fixvx.com" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"fixvx.com" forKey:@"tweet_url_host"];
-        if (indexPath) [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"CANCEL_BUTTON_TITLE"] style:UIAlertActionStyleCancel handler:nil];
-    [alert addAction:xHostAction];
-    [alert addAction:twitterHostAction];
-    [alert addAction:fxHostAction];
-    [alert addAction:vxHostAction];
-    [alert addAction:fixvxHostAction];
-    [alert addAction:cancel];
-    [self presentViewController:alert animated:true completion:nil];
 }
 
 - (void)showRegularFontPicker:(NSDictionary *)sender {
