@@ -102,7 +102,7 @@ case "$MODE" in
       say "Building the IPA."
       if command -v cyan >/dev/null 2>&1; then
         cyan -i packages/com.atebits.Tweetie2.ipa -o packages/NeoFreeBird-sideloaded --ignore-encrypted \
-          -uwf .theos/obj/debug/keychainfix.dylib .theos/obj/debug/libbhFLEX.dylib \
+          -uwf .theos/obj/debug/keychainfix.dylib .theos/obj/debug/libbhFLEX.dylib packages/tna.deb packages/xnfm.deb packages/nnttu.deb \
           .theos/obj/debug/BHTwitter.dylib layout/Library/Application\ Support/BHT/BHTwitter.bundle
       else
         say "Skipping cyan step because it is not installed."
